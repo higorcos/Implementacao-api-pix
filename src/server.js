@@ -36,6 +36,40 @@ axios({
     data:{
         grant_type: 'client_credentials'
     }
+}).then((response)=>{
+    console.log('Pegou novo token');
+    const accessToken = response.data?.access_token;
+    const endPoint = `${process.env.EFI_ENDPOINT}/v2/cob`;
+
+    const dataCob = {
+        calendario: {
+          expiracao: 3600
+        },
+        devedor: {
+          cpf: "12345678909",
+          nome: "Francisco da Silva"
+        },
+        valor: {
+          original: "123.45"
+        },
+        chave: "71cdf9ba-c695-4e3c-b010-abb521a3f1besdsds",
+        solicitacaoPagador: "Cobrança dos serviços prestados."
+      }
+    const configAxios= {
+        httpsAgent: agent,
+        headers:{
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        },
+    }
+    axios.post(endPoint,dataCob,configAxios).then(({data})=>{
+        console.log('Nova cobrança');
+        console.log(data)
+    }).catch((err)=>{
+
+    });
+}).catch((err)=>{
+    console.log(err);
 })
 
 /*
