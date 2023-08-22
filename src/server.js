@@ -1,12 +1,16 @@
+//Se tiver em produção não precisa 
 const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-
-//Se tiver em produção não precisa 
+const express = require('express')
+const app = express();
 if(process.env.NODE_ENV !== 'production'){ 
  require('dotenv').config();
 }
+
+app.set('view engine','ejs');
+app.set('views','src/views');
 
 //Pegando certificado
 const certificate = fs.readFileSync(
@@ -21,56 +25,75 @@ const agent = new https.Agent({
 const credentials = Buffer.from(
     `${process.env.EFI_CLIENTE_ID}:${process.env.EFI_CLIENTE_SECRET}`
 ).toString('base64');
+app.get('/', async (req,res)=>{
+   
+    /*Pegar token mas passando 
+        Login e certificado
+    */
+   try{
+        const resultNewToken = await axios({
+                method: 'POST',
+                url: `${process.env.EFI_ENDPOINT}/oauth/token`,
+                headers:{
+                    Authorization: `Basic ${credentials}`,
+                    'Content-Type': 'application/json'
+                },
+                httpsAgent: agent,
+                data:{
+                    grant_type: 'client_credentials'
+                }
+        });
 
-/*Pegar token mas passando 
-    Login e certificado
-*/
-axios({
-    method: 'POST',
-    url: `${process.env.EFI_ENDPOINT}/oauth/token`,
-    headers:{
-        Authorization: `Basic ${credentials}`,
-        'Content-Type': 'application/json'
-    },
-    httpsAgent: agent,
-    data:{
-        grant_type: 'client_credentials'
+        console.log('Pegou novo token');
+        const accessToken = resultNewToken.data?.access_token;
+        
+        const reqApiPix = axios.create({
+            baseURL: process.env.EFI_ENDPOINT,
+            httpsAgent: agent,
+            headers:{
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+        })
+        
+        const dataCob = {
+            calendario: {
+                expiracao: 3600
+            },
+            devedor: {
+                cpf: "12345678909",
+                nome: "Francisco da Silva"
+            },
+            valor: {
+                original: "123.45"
+            },
+            chave: "71cdf9ba-c695-4e3c-b010-abb521a3f1besdsds",
+            solicitacaoPagador: "Cobrança dos serviços prestados."
+            }
+        try{
+
+            const responseNewCob = await reqApiPix.post('/v2/cob',dataCob);
+            const idLocCob = responseNewCob.data.loc.id; 
+            const responseQRcode = await reqApiPix.get(`/v2/loc/${idLocCob}/qrcode`,dataCob);
+            
+            // console.log(dataQRcode);
+            console.log('Nova cobrança');
+            res.render('qrcode',{qrcodeImage: responseQRcode.data.imagemQrcode});
+            // res.json(responseQRcode.data)
+            
+        }catch(err){
+            console.log('Erro na criação de nova cobrança');
+            console.log(err);
+        }
+          
+    
+       
+        
+    }catch(err){
+        console.log('Erro na Geração de um Novo Token');
+        console.log(err);
     }
-}).then((response)=>{
-    console.log('Pegou novo token');
-    const accessToken = response.data?.access_token;
-    const endPoint = `${process.env.EFI_ENDPOINT}/v2/cob`;
-
-    const dataCob = {
-        calendario: {
-          expiracao: 3600
-        },
-        devedor: {
-          cpf: "12345678909",
-          nome: "Francisco da Silva"
-        },
-        valor: {
-          original: "123.45"
-        },
-        chave: "71cdf9ba-c695-4e3c-b010-abb521a3f1besdsds",
-        solicitacaoPagador: "Cobrança dos serviços prestados."
-      }
-    const configAxios= {
-        httpsAgent: agent,
-        headers:{
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        },
-    }
-    axios.post(endPoint,dataCob,configAxios).then(({data})=>{
-        console.log('Nova cobrança');
-        console.log(data)
-    }).catch((err)=>{
-
-    });
-}).catch((err)=>{
-    console.log(err);
-})
+});
 
 /*
 curl --request POST \
@@ -81,3 +104,7 @@ curl --request POST \
     "grant_type": "client_credentials"
 }'
 */
+app.listen(8000,()=>{
+    console.log('\t\tServido Rodando');
+})
+

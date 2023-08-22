@@ -4,15 +4,17 @@
   "description": "Primeira integração experimental api PIX Efí(GerenciaNet)",
   "main": "src/server.js",
   "scripts": {
-    "dev":"nodemon ."
+    "dev": "nodemon ."
   },
   "author": "Higor Pinheiro Costa",
   "license": "MIT",
   "devDependencies": {
     "dotenv": "^16.3.1",
-    "nodemon": "^3.0.1"
+    "nodemon": "^1.0.3"
   },
   "peerDependencies": {
-    "axios": "^1.4.0"
+    "axios": "^1.4.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2"
   }
 }
