@@ -65,4 +65,4 @@ const pixRequest = async () =>{
     // }
 }
 
-module.exports = pixRequest
+module.exports = {pixRequest}

@@ -1,4 +1,4 @@
-const pixRequest = require('./api-pix/credentials');
+const {pixRequest} = require('./api-pix/credentials');
 const express = require('express');
 const app = express();
 
@@ -44,12 +44,22 @@ app.get('/', async (req,res)=>{
         // res.json(responseQRcode.data)
             
         }catch(err){
-            console.log('Erro na criação de nova cobrança');
-            console.log(err);
+            res.json({err:true, msgErro: `Erro na criação de nova cobrança`})
         }
 
 });
+app.get('/cobrancas', async (req,res)=>{
+    const apiPix = await pixRequest();
+    try{
+        
+        const listCob = await apiPix.get('/v2/cob?inicio=2023-08-22T00:00:00Z&fim=2023-12-30T00:00:00Z');
+        res.json(listCob.data);
+            
+        }catch(err){
+            res.json({err:true, msgErro: `Erro na listagem das cobrança`});
+        }
 
+});
 /*
 curl --request POST \
   --url https://api-pix-h.gerencianet.com.br/oauth/token \
