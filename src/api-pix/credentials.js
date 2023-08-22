@@ -66,3 +66,15 @@ const pixRequest = async () =>{
 }
 
 module.exports = {pixRequest}
+
+/*
+Exemplos requisição
+
+curl --request POST \
+  --url https://api-pix-h.gerencianet.com.br/oauth/token \
+  --header 'Authorization: Basic Q2xM4Y2M3NDhlMjYyYThjYjYzZThk....' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "grant_type": "client_credentials"
+}'
+*/

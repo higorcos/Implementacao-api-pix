@@ -1,9 +1,9 @@
 const {pixRequest} = require('./api-pix/credentials');
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser')
 
-
-
+app.use(bodyParser.json())
 app.set('view engine','ejs');
 app.set('views','src/views');
 
@@ -43,9 +43,9 @@ app.get('/', async (req,res)=>{
         res.render('qrcode',{qrcodeImage: responseQRcode.data.imagemQrcode});
         // res.json(responseQRcode.data)
             
-        }catch(err){
-            res.json({err:true, msgErro: `Erro na criação de nova cobrança`})
-        }
+    }catch(err){
+        res.json({err:true, msgErro: `Erro na criação de nova cobrança`})
+    }
 
 });
 app.get('/cobrancas', async (req,res)=>{
@@ -55,20 +55,16 @@ app.get('/cobrancas', async (req,res)=>{
         const listCob = await apiPix.get('/v2/cob?inicio=2023-08-22T00:00:00Z&fim=2023-12-30T00:00:00Z');
         res.json(listCob.data);
             
-        }catch(err){
-            res.json({err:true, msgErro: `Erro na listagem das cobrança`});
-        }
+    }catch(err){
+        res.json({err:true, msgErro: `Erro na listagem das cobrança`});
+    }
 
 });
-/*
-curl --request POST \
-  --url https://api-pix-h.gerencianet.com.br/oauth/token \
-  --header 'Authorization: Basic Q2xM4Y2M3NDhlMjYyYThjYjYzZThk....' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "grant_type": "client_credentials"
-}'
-*/
+app.post('/webhook(/pix)?',(req,res)=>{
+    console.log(req.body);
+    res.send('200');
+}); 
+
 app.listen(8000,()=>{
     console.log('\t\tServido Rodando');
 })
