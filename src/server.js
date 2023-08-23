@@ -15,7 +15,7 @@ app.set('views','src/views');
 app.get('/', async (req,res)=>{
     //Pegar Novo Token quando a aplicação for startada 
     // const apiPix = await apiPixA;
-
+    console.log('acess')
     const apiPix = await pixRequest();
     const dataCob = {
         calendario: {
