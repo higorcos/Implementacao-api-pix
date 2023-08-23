@@ -65,7 +65,7 @@ app.post('/webhook(/pix)?',(req,res)=>{
     res.send('200');
 }); 
 
-app.listen(8000,()=>{
+app.listen(80,()=>{
     console.log('\t\tServido Rodando');
 })
 
