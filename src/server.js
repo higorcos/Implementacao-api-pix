@@ -41,7 +41,8 @@ app.get('/', async (req,res)=>{
             console.log(reponse.data)
             responseNewCob = reponse
         }).catch((err)=>{
-            res.json({err})
+            console.log('err')
+            console.log(err.data)
             
         })
         const idLocCob = responseNewCob.data.loc.id; 
