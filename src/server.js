@@ -34,17 +34,17 @@ app.get('/', async (req,res)=>{
     
     try{
     
-        // const responseNewCob = await apiPix.post('/v2/cob',dataCob);
+        const responseNewCob = await apiPix.post('/v2/cob',dataCob);
 
-        let responseNewCob = ''
-        apiPix.post('/v2/cob',dataCob).then((reponse)=>{
-            console.log(reponse.data)
-            responseNewCob = reponse
-        }).catch((err)=>{
-            console.log('err')
-            console.log(err)
+        // let responseNewCob = ''
+        // apiPix.post('/v2/cob',dataCob).then((reponse)=>{
+        //     console.log(reponse.data)
+        //     responseNewCob = reponse
+        // }).catch((err)=>{
+        //     console.log('err')
+        //     console.log(err)
             
-        })
+        // })
         const idLocCob = responseNewCob.data.loc.id; 
         const responseQRcode = await apiPix.get(`/v2/loc/${idLocCob}/qrcode`,dataCob);
         
