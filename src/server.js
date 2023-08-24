@@ -23,12 +23,12 @@ app.get('/', async (req,res)=>{
         },
         devedor: {
             cpf: "12345678909",
-            nome: "Francisco da Silva"
+            nome: "teste da Silva"
         },
         valor: {
-            original: "123.45"
+            original: "1.00"
         },
-        chave: "71cdf9ba-c695-4e3c-b010-abb521a3f1besdsds",
+        chave: "214710c8-0765-42ff-a314-1ce2cf4d2ef7",
         solicitacaoPagador: "Cobrança dos serviços prestados."
     }
     
