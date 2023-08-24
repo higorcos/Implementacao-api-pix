@@ -22,8 +22,8 @@ app.get('/', async (req,res)=>{
             expiracao: 3600
         },
         devedor: {
-            cpf: "12345678909",
-            nome: "teste da Silva"
+            cpf: "61666917346",
+            nome: "Nathalya de Jesus Pinheiro Costa"
         },
         valor: {
             original: "1.00"

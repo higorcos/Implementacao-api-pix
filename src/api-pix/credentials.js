@@ -27,8 +27,8 @@ const credentials = Buffer.from(
 //Pegar token, passando login e certificado
 const getAccessToken = ()=> {
     
-    number += 1
-    console.log('Heloo', number)
+    // number += 1
+    // console.log('Heloo', number)
 
     return axios({
             method: 'POST',
@@ -48,7 +48,8 @@ const pixRequest = async () =>{
     // try{
 
         const newToken = await getAccessToken();
-        console.log(newToken.data.expires_in)
+        console.log(newToken.data?.access_token);
+        
         const accessToken = newToken.data?.access_token;
            console.log('Pegou novo token');
             
