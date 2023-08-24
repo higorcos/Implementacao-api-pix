@@ -9,14 +9,14 @@ app.set('views','src/views');
 
 
 //Pegar Novo Token quando a aplicação for startada 
-// const apiPixA = pixRequest();
+const apiPixA = pixRequest();
 
 
 app.get('/', async (req,res)=>{
     //Pegar Novo Token quando a aplicação for startada 
-    // const apiPix = await apiPixA;
+    const apiPix = await apiPixA;
     console.log('acess')
-    const apiPix = await pixRequest();
+    // const apiPix = await pixRequest();
     const dataCob = {
         calendario: {
             expiracao: 3600
