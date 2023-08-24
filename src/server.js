@@ -34,6 +34,8 @@ app.get('/', async (req,res)=>{
     
     try{
     
+        // const responseNewCob = await apiPix.post('/v2/cob',dataCob);
+
         let responseNewCob = ''
         apiPix.post('/v2/cob',dataCob).then((reponse)=>{
             console.log(reponse.data)
