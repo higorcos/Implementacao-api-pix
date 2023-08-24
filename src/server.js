@@ -12,7 +12,7 @@ app.set('views','src/views');
 const apiPixA = pixRequest();
 
 
-app.get('/', async (req,res)=>{
+app.get('/api-pix', async (req,res)=>{
     //Pegar Novo Token quando a aplicação for startada 
     const apiPix = await apiPixA;
     console.log('acess')
@@ -58,7 +58,7 @@ app.get('/', async (req,res)=>{
     }
 
 });
-app.get('/cobrancas', async (req,res)=>{
+app.get('/api-pix/cobrancas', async (req,res)=>{
     const apiPix = await pixRequest();
     try{
         
