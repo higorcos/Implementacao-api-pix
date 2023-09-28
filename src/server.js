@@ -26,7 +26,7 @@ app.get('/api-pix', async (req,res)=>{
             nome: "Nathalya de Jesus Pinheiro Costa"
         },
         valor: {
-            original: "1.00"
+            original: "0.05"
         },
         chave: "154dc5b2-2ed2-44db-82fe-d9ff82088e4e",
         solicitacaoPagador: "Cobrança dos serviços prestados."
